@@ -323,6 +323,10 @@ footer{background:#000;border-top:1px solid var(--border);padding:50px 18px 24px
   .modal-content{border-radius:18px;max-width:460px;border:1px solid var(--purple)}
   .modal-handle{display:none}
 }
+  .mock-donut circle:last-child{stroke-dasharray:0 126;transition:stroke-dasharray 2s ease}
+.mock-donut.animated circle:last-child{stroke-dasharray:100 26}
+.mock-chart svg path:last-child{stroke-dashoffset:1000;stroke-dasharray:1000;transition:stroke-dashoffset 2.5s ease}
+.mock-chart.animated svg path:last-child{stroke-dashoffset:0}
 </style>
 </head>
 <body>
@@ -722,6 +726,16 @@ function closeModal(){document.getElementById('serviceModal').classList.remove('
 function showEmailForm(){document.getElementById('modalMain').style.display='none';document.getElementById('emailForm').classList.add('show')}
 document.getElementById('serviceModal').addEventListener('click',function(e){if(e.target===this)closeModal()});
 document.getElementById('emailForm').addEventListener('submit',function(e){e.preventDefault();var form=this;var data=new FormData(form);fetch(form.action,{method:'POST',body:data,headers:{'Accept':'application/json'}}).then(()=>{form.classList.remove('show');document.getElementById('formSuccess').classList.add('show');form.reset()}).catch(()=>{form.classList.remove('show');document.getElementById('formSuccess').classList.add('show');form.reset()})});
+var mockObs=new IntersectionObserver(function(entries){
+  entries.forEach(function(e){
+    if(e.isIntersecting){
+      e.target.querySelector('.mock-donut')?.classList.add('animated');
+      e.target.querySelector('.mock-chart')?.classList.add('animated');
+    }
+  });
+},{threshold:.3});
+var mf=document.querySelector('.mockup-frame');
+if(mf)mockObs.observe(mf);
 </script>
 </body>
 </html>
